@@ -359,7 +359,7 @@ def main():
                         "Install NVIDA apex or upgrade to PyTorch 1.6")
 
     random_seed(args.seed, args.rank)
-
+    print(args.num_classes)
     model = create_model(
         args.model,
         pretrained=args.pretrained,
