@@ -49,6 +49,7 @@ class ParserImageFolder(Parser):
         if class_map:
             class_to_idx = load_class_map(class_map, root)
         self.samples, self.class_to_idx = find_images_and_targets(root, class_to_idx=class_to_idx)
+        print(self.class_to_idx)
         if len(self.samples) == 0:
             raise RuntimeError(
                 f'Found 0 images in subfolders of {root}. Supported image extensions are {", ".join(IMG_EXTENSIONS)}')

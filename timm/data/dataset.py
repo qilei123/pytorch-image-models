@@ -60,7 +60,8 @@ class ImageDataset(data.Dataset):
 
     def filenames(self, basename=False, absolute=False):
         return self.parser.filenames(basename, absolute)
-
+    def get_labels(self):
+        pass
 
 class IterableImageDataset(data.IterableDataset):
 
