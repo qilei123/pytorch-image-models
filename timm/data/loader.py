@@ -208,7 +208,9 @@ def create_loader(
     if distributed and not isinstance(dataset, torch.utils.data.IterableDataset):
         if is_training:
             if num_aug_repeats:
-                sampler = RepeatAugSampler(dataset, num_repeats=num_aug_repeats)
+                print("balanced sample")
+                sampler = ImbalancedDatasetSampler(dataset)
+                #sampler = RepeatAugSampler(dataset, num_repeats=num_aug_repeats)
             else:
                 sampler = torch.utils.data.distributed.DistributedSampler(dataset)
         else:
