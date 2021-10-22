@@ -120,7 +120,8 @@ class PositionalEncodingFourier(nn.Module):
         y_embed = y_embed / (y_embed[:, -1:, :] + self.eps) * self.scale
         x_embed = x_embed / (x_embed[:, :, -1:] + self.eps) * self.scale
         dim_t = torch.arange(self.hidden_dim, dtype=torch.float32, device=device)
-        dim_t = self.temperature ** (2 * torch.div(dim_t, 2, rounding_mode='floor') / self.hidden_dim)
+        #dim_t = self.temperature ** (2 * torch.div(dim_t, 2, rounding_mode='floor') / self.hidden_dim)
+        dim_t = self.temperature ** (2 * torch.floor_divide(dim_t, 2) / self.hidden_dim)
         pos_x = x_embed[:, :, :, None] / dim_t
         pos_y = y_embed[:, :, :, None] / dim_t
         pos_x = torch.stack([pos_x[:, :, :, 0::2].sin(), pos_x[:, :, :, 1::2].cos()], dim=4).flatten(3)
