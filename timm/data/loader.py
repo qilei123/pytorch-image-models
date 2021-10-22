@@ -176,6 +176,7 @@ def create_loader(
         use_multi_epochs_loader=False,
         persistent_workers=True,
         worker_seeding='all',
+        use_balanced_sampler=False,
 ):
     re_num_splits = 0
     if re_split:
@@ -218,7 +219,7 @@ def create_loader(
     else:
         assert num_aug_repeats == 0, "RepeatAugment not currently supported in non-distributed or IterableDataset use"
         
-    if is_training:
+    if is_training and use_balanced_sampler:
         print("balanced sample")
         sampler = ImbalancedDatasetSampler(dataset)
     if collate_fn is None:

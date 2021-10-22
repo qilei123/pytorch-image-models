@@ -62,7 +62,6 @@ class ImageDataset(data.Dataset):
         return self.parser.filenames(basename, absolute)
     def get_labels(self):
         labels =[]
-        
         for sample in self.parser.samples:
             labels.append(sample[1])
         return labels
