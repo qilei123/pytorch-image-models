@@ -208,9 +208,7 @@ def create_loader(
     if distributed and not isinstance(dataset, torch.utils.data.IterableDataset):
         if is_training:
             if num_aug_repeats:
-                print("balanced sample")
-                sampler = ImbalancedDatasetSampler(dataset)
-                #sampler = RepeatAugSampler(dataset, num_repeats=num_aug_repeats)
+                sampler = RepeatAugSampler(dataset, num_repeats=num_aug_repeats)
             else:
                 sampler = torch.utils.data.distributed.DistributedSampler(dataset)
         else:
@@ -219,7 +217,8 @@ def create_loader(
             sampler = OrderedDistributedSampler(dataset)
     else:
         assert num_aug_repeats == 0, "RepeatAugment not currently supported in non-distributed or IterableDataset use"
-
+        print("balanced sample")
+        sampler = ImbalancedDatasetSampler(dataset)
     if collate_fn is None:
         collate_fn = fast_collate if use_prefetcher else torch.utils.data.dataloader.default_collate
 
