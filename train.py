@@ -294,6 +294,8 @@ parser.add_argument('--torchscript', dest='torchscript', action='store_true',
 parser.add_argument('--log-wandb', action='store_true', default=False,
                     help='log training and validation metrics to wandb')
 
+parser.add_argument('--use_balanced_sampler', action='store_true', default=False,
+                    help='use_balanced_sampler.')
 
 def _parse_args():
     # Do we have a config file to parse?
@@ -541,6 +543,7 @@ def main():
         pin_memory=args.pin_mem,
         use_multi_epochs_loader=args.use_multi_epochs_loader,
         worker_seeding=args.worker_seeding,
+        use_balanced_sampler=args.use_balanced_sampler
     )
 
     loader_eval = create_loader(
