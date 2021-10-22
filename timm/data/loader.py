@@ -17,7 +17,7 @@ from .constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from .distributed_sampler import OrderedDistributedSampler, RepeatAugSampler
 from .random_erasing import RandomErasing
 from .mixup import FastCollateMixup
-
+from torchsampler import ImbalancedDatasetSampler
 
 def fast_collate(batch):
     """ A fast collation function optimized for uint8 images (np array or torch) and int64 targets (labels)"""

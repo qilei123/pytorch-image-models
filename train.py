@@ -359,7 +359,7 @@ def main():
                         "Install NVIDA apex or upgrade to PyTorch 1.6")
 
     random_seed(args.seed, args.rank)
-    print(args.num_classes)
+
     model = create_model(
         args.model,
         pretrained=args.pretrained,
@@ -589,7 +589,7 @@ def main():
             exp_name = args.experiment
         else:
             exp_name = '-'.join([
-                datetime.now().strftime("%Y%m%d-%H%M%S"),
+                #datetime.now().strftime("%Y%m%d-%H%M%S"),
                 safe_model_name(args.model),
                 str(data_config['input_size'][-1])
             ])
@@ -784,7 +784,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                 target = target[0:target.size(0):reduce_factor]
 
             loss = loss_fn(output, target)
-            acc1, acc5 = accuracy(output, target, topk=(1, 12))
+            acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
             if args.distributed:
                 reduced_loss = reduce_tensor(loss.data, args.world_size)
