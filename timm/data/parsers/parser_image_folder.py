@@ -113,7 +113,7 @@ class ParserDBCSV(Parser):
                 else:
                     row[1] = 1
 
-            row[0] = os.path.join(self.root,row[0])
+            row[0] = os.path.join(self.root,row[0]+".jpeg")
 
             self.samples.append(row)
 
