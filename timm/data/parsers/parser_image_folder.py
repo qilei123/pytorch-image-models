@@ -78,7 +78,8 @@ class ParserDBCSV(Parser):
     def __init__(
             self,
             root,
-            class_map=''):
+            class_map='',
+            DBbinary = False):
         super().__init__()
         self.root = root
 
@@ -103,7 +104,15 @@ class ParserDBCSV(Parser):
         for row_ in csvreader:
             row = []
             for i in range(2):
+
                 row.append(row_[i])
+            
+            if DBbinary:
+                if row[1]>1:
+                    row[1] = 0
+                else:
+                    row[1] = 1
+
             row[0] = os.path.join(self.root,row[0])
 
             self.samples.append(row)

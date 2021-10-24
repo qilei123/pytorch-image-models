@@ -24,6 +24,8 @@ def create_parser(name, root, split='train', **kwargs):
         # FIXME support split here, in parser?
         if os.path.isfile(root) and os.path.splitext(root)[1] == '.tar':
             parser = ParserImageInTar(root, **kwargs)
+        elif 'diabetic-retinopathy' in root:
+            parser = ParserDBCSV(root,**kwargs)
         else:
             parser = ParserImageFolder(root, **kwargs)
     return parser
