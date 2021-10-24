@@ -7,6 +7,8 @@ Hacked together by / Copyright 2020 Ross Wightman
 """
 import os
 
+from torch.utils import data
+import csv
 from timm.utils.misc import natural_key
 
 from .parser import Parser
@@ -50,6 +52,71 @@ class ParserImageFolder(Parser):
             class_to_idx = load_class_map(class_map, root)
         self.samples, self.class_to_idx = find_images_and_targets(root, class_to_idx=class_to_idx)
         
+        if len(self.samples) == 0:
+            raise RuntimeError(
+                f'Found 0 images in subfolders of {root}. Supported image extensions are {", ".join(IMG_EXTENSIONS)}')
+
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        return open(path, 'rb'), target
+
+    def __len__(self):
+        return len(self.samples)
+
+    def _filename(self, index, basename=False, absolute=False):
+        filename = self.samples[index][0]
+        if basename:
+            filename = os.path.basename(filename)
+        elif not absolute:
+            filename = os.path.relpath(filename, self.root)
+        return filename
+
+class ParserDBCSV(Parser):
+
+    csv_anns = {"train":"trainLabels.csv","validation":"retinopathy_solution.csv"}
+
+    def __init__(
+            self,
+            root,
+            class_map=''):
+        super().__init__()
+        self.root = root
+
+        if self.root[-1] =='/':
+            self.root = self.root[:-1]
+
+        data_set = os.path.basename(self.root)
+
+        self.realroot=self.root[:-len(data_set)]
+
+        csv_ann = self.csv_anns[data_set]
+        
+        csvreader = csv.reader(open(os.path.join(self.realroot,csv_ann)))
+
+        #skip fields
+        next(csvreader)
+
+        self.samples=[]
+
+        self.class_to_idx={}
+
+        for row_ in csvreader:
+            row = []
+            for i in range(2):
+                row.append(row_[i])
+            row[0] = os.path.join(self.root,row[0])
+
+            self.samples.append(row)
+
+            if not row[1] in self.class_to_idx:
+                self.class_to_idx[row[1]] = row[1]
+        
+        '''
+        class_to_idx = None
+        if class_map:
+            class_to_idx = load_class_map(class_map, root)
+        self.samples, self.class_to_idx = find_images_and_targets(root, class_to_idx=class_to_idx)
+        '''
         if len(self.samples) == 0:
             raise RuntimeError(
                 f'Found 0 images in subfolders of {root}. Supported image extensions are {", ".join(IMG_EXTENSIONS)}')
