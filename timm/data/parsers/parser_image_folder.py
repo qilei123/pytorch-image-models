@@ -106,7 +106,7 @@ class ParserDBCSV(Parser):
             for i in range(2):
 
                 row.append(row_[i])
-            
+            row[1] = float(row[1])
             if DBbinary:
                 if row[1]>1:
                     row[1] = 0
