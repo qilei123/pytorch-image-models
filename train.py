@@ -29,7 +29,7 @@ import torchvision.utils
 from torch.nn.parallel import DistributedDataParallel as NativeDDP
 
 import warnings
-warnings.filterwarnings("UserWarning")
+warnings.filterwarnings("ignore", category=UserWarning)
 
 from timm.data import create_dataset, create_loader, resolve_data_config, Mixup, FastCollateMixup, AugMixDataset
 from timm.models import create_model, safe_model_name, resume_checkpoint, load_checkpoint,\
