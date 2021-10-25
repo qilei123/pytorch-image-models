@@ -25,7 +25,9 @@ def create_parser(name, root, split='train', **kwargs):
         if os.path.isfile(root) and os.path.splitext(root)[1] == '.tar':
             parser = ParserImageInTar(root, **kwargs)
         elif 'diabetic-retinopathy' in root:
+            print('dbcsv')
             parser = ParserDBCSV(root,**kwargs)
         else:
+            print('ImageFolder')
             parser = ParserImageFolder(root, **kwargs)
     return parser
