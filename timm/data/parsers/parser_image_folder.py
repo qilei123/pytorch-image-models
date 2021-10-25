@@ -10,6 +10,7 @@ import os
 from torch.utils import data
 import csv
 from timm.utils.misc import natural_key
+import random
 
 from .parser import Parser
 from .class_map import load_class_map
@@ -119,7 +120,7 @@ class ParserDBCSV(Parser):
 
             if not row[1] in self.class_to_idx:
                 self.class_to_idx[row[1]] = row[1]
-        
+        random.shuffle(self.samples)
         '''
         class_to_idx = None
         if class_map:
