@@ -1,0 +1,1 @@
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model convit_base --pretrained --num-classes 3 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
