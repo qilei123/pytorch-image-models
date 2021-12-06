@@ -230,7 +230,8 @@ def validate(args):
             if valid_labels is not None:
                 output = output[:, valid_labels]
             loss = criterion(output, target)
-
+            print(output)
+            print(target)
             if real_labels is not None:
                 real_labels.add_result(output)
 
