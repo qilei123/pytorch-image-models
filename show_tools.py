@@ -90,7 +90,7 @@ def plot_confusion_matrix(cm,
                      color="white" if cm[i, j] > thresh else "black")
 
 
-    plt.tight_layout()
+    #plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label\naccuracy={:0.4f}; misclass={:0.4f}'.format(accuracy, misclass))
     plt.savefig('%s.jpg' %(fig_name))
