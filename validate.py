@@ -216,6 +216,8 @@ def validate(args):
             input = input.contiguous(memory_format=torch.channels_last)
         model(input)
         end = time.time()
+        labels_true=[]
+        labels_pred=[]
         for batch_idx, (input, target) in enumerate(loader):
             if args.no_prefetcher:
                 target = target.cuda()
@@ -230,10 +232,14 @@ def validate(args):
             if valid_labels is not None:
                 output = output[:, valid_labels]
             loss = criterion(output, target)
-            print(output)
-            print(target)
+            #print(output)
+            #print(target)
             if real_labels is not None:
                 real_labels.add_result(output)
+            
+            _, pred_batch = output.topk(1, 1, True, True)
+            pred_batch = pred_batch.cpu().numpy()
+            print(pred_batch)
 
             # measure accuracy and record loss
             acc1, acc5 = accuracy(output.detach(), target, topk=(1, 5))
