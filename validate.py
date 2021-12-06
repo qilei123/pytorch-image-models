@@ -19,9 +19,13 @@ import torch.nn.parallel
 from collections import OrderedDict
 from contextlib import suppress
 
+from sklearn.metrics import confusion_matrix
+
 from timm.models import create_model, apply_test_time_pool, load_checkpoint, is_model, list_models
 from timm.data import create_dataset, create_loader, resolve_data_config, RealLabelsImagenet
 from timm.utils import accuracy, AverageMeter, natural_key, setup_default_logging, set_jit_legacy
+
+from show_tools import *
 
 has_apex = False
 try:
@@ -108,7 +112,8 @@ parser.add_argument('--real-labels', default='', type=str, metavar='FILENAME',
                     help='Real labels JSON file for imagenet evaluation')
 parser.add_argument('--valid-labels', default='', type=str, metavar='FILENAME',
                     help='Valid label indices txt file for validation of partial label space')
-
+parser.add_argument('--confusion-matrix', action='store_true', default=False,
+                    help='show the confusion matrix.')
 
 def validate(args):
     # might as well try to validate something
@@ -266,6 +271,9 @@ def validate(args):
                         rate_avg=input.size(0) / batch_time.avg,
                         loss=losses, top1=top1, top5=top5))
 
+        if args.confusion_matrix:
+            cm = confusion_matrix(labels_true,labels_pred)
+            plot_confusion_matrix(cm,range(0,args.num_classes))
     if real_labels is not None:
         # real labels mode replaces topk values at the end
         top1a, top5a = real_labels.get_accuracy(k=1), real_labels.get_accuracy(k=5)
