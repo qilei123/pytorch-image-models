@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from matplotlib import cm
+import itertools
 
 #from sklearn.decomposition import PCA
 #from sklearn.manifold import TSNE
