@@ -239,7 +239,7 @@ def validate(args):
             
             _, pred_batch = output.topk(1, 1, True, True)
             pred_batch = pred_batch.cpu().numpy()
-            print(pred_batch.transform())
+            print(pred_batch.transpose())
             true_labels = target.cpu().numpy()
             print(true_labels)
 
