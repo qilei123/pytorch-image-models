@@ -10,6 +10,6 @@ export batch_size=32
 #python train.py $data_dir --model $model_name --pretrained --num-classes $num_classes --output $output_dir -b $batch_size --use_balanced_sampler
 model_name=xcit_small_12_p8_224
 checkpoint_dir=$output_dir/xcit_small_12_p8_224-224/model_best.pth.tar
-python validate.py $data_dir --model $model_name --num-classes $num_classes --checkpoint $output_dir -b $batch_size
+python validate.py $data_dir --model $model_name --num-classes $num_classes --checkpoint $checkpoint_dir -b $batch_size
 #model_name=swin_base_patch4_window7_224
 #python train.py $data_dir --model $model_name --pretrained --num-classes $num_classes --output $output_dir -b $batch_size --use_balanced_sampler
