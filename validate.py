@@ -240,6 +240,8 @@ def validate(args):
             _, pred_batch = output.topk(1, 1, True, True)
             pred_batch = pred_batch.cpu().numpy()
             print(pred_batch)
+            true_labels = target.cpu().numpy()
+            print(true_labels)
 
             # measure accuracy and record loss
             acc1, acc5 = accuracy(output.detach(), target, topk=(1, 5))
