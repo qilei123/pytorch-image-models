@@ -273,7 +273,7 @@ def validate(args):
 
         if args.confusion_matrix:
             cm = confusion_matrix(labels_true,labels_pred)
-            plot_confusion_matrix(cm,range(0,args.num_classes),fig_name="confusion_matrix")
+            plot_confusion_matrix(cm,range(0,args.num_classes),normalize=False,fig_name="confusion_matrix")
     if real_labels is not None:
         # real labels mode replaces topk values at the end
         top1a, top5a = real_labels.get_accuracy(k=1), real_labels.get_accuracy(k=5)
