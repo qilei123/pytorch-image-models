@@ -114,6 +114,8 @@ parser.add_argument('--valid-labels', default='', type=str, metavar='FILENAME',
                     help='Valid label indices txt file for validation of partial label space')
 parser.add_argument('--confusion-matrix', action='store_true', default=False,
                     help='show the confusion matrix.')
+parser.add_argument('--confusion-matrix-fig-dir', default='', type=str, metavar='FILENAME',
+                    help='path to save confusion matrix figure')
 
 def validate(args):
     # might as well try to validate something
@@ -273,7 +275,7 @@ def validate(args):
 
         if args.confusion_matrix:
             cm = confusion_matrix(labels_true,labels_pred)
-            plot_confusion_matrix(cm,range(0,args.num_classes),normalize=False,fig_name="confusion_matrix")
+            plot_confusion_matrix(cm,range(0,args.num_classes),normalize=False,fig_name=os.path.join(args.confusion_matrix_fig_dir,"confusion_matrix"))
     if real_labels is not None:
         # real labels mode replaces topk values at the end
         top1a, top5a = real_labels.get_accuracy(k=1), real_labels.get_accuracy(k=5)
