@@ -1,5 +1,5 @@
-export data_dir=/home/qilei/.TEMP/gastro_position_clasification_best/
-export num_classes=13
+export data_dir=/home/qilei/.TEMP/gastro_position_clasification_11/
+export num_classes=12
 export output_dir=${data_dir}work_dir_balanced
 #export output_dir=${data_dir}work_dir
 export batch_size=64
