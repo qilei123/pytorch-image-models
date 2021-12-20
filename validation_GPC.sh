@@ -1,7 +1,7 @@
 export data_dir=/home/qilei/.TEMP/gastro_position_clasification_best/
 export num_classes=13
-#export output_dir=${data_dir}work_dir_balanced/
-export output_dir=${data_dir}work_dir/
+export output_dir=${data_dir}work_dir_balanced
+#export output_dir=${data_dir}work_dir
 export batch_size=64
 
 model_name=vit_base_patch32_224
