@@ -53,7 +53,7 @@ parser.add_argument('--num-gpu', type=int, default=1,
                     help='Number of GPUS to use')
 parser.add_argument('--no-test-pool', dest='no_test_pool', action='store_true',
                     help='disable test time pool')
-parser.add_argument('--topk', default=5, type=int,
+parser.add_argument('--topk', default=1, type=int,
                     metavar='N', help='Top-k to output to CSV')
 
 
