@@ -14,7 +14,7 @@ def get_single_image_feature(image,model,transform):
     with torch.no_grad():
         out_feature = model.forward_features(img_tensor)
     
-    out_feature = out_feature.cpu().numpy()[0][0]
+    out_feature = out_feature.cpu().numpy()
     print(out_feature.shape)
     
 
