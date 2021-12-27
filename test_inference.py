@@ -56,7 +56,7 @@ def inference_single_image(image,model,transform):
 
 def test_inference():
 
-    checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/clean_model_best.pth.tar'
+    checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/clean_model_best.pth'
     img_path = '/home/qilei/.TEMP/gastro_position_clasification_11/test/0/20191015_1601_1610_w_779.jpg'
     model_name = 'swin_base_patch4_window7_224'
     
