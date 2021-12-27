@@ -87,7 +87,7 @@ def generate_pca():
     colors_per_class = 12
     cmap = cm.get_cmap('tab20')
 
-    classes = ['Upper Esophagus', 'Lower_Esophagus',
+    classes = ['Upper Esophagus', 'Lower Esophagus',
                         'Upper Gastric Body', 'Middle Gastric Body', 'Lower Gastric Body',
                         'Gastric Antrum', 'Esophagoastric Angle', 'Duodenal Bulb', 'Descending Duodenum',
                         'Fundus Low', 'Fundus High', 'Background']
@@ -116,6 +116,6 @@ def generate_pca():
 
     # plt.show()
     # finally, show the plot
-    plt.savefig(os.path.join("/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224", 'position_sqz_pca.jpg'))
+    plt.savefig(os.path.join("/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224", model_name+'_pca.jpg'))
 if __name__ == '__main__':
     generate_pca()
