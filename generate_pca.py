@@ -1,6 +1,20 @@
 import test_inference
 from test_inference import *
 from timm.data import ImageDataset, create_loader
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+from matplotlib import cm
+
+def scale_to_01_range(x):
+    # compute the distribution range
+    value_range = (np.max(x) - np.min(x))
+
+    # move the distribution so that it starts from zero
+    # by extracting the minimal value from all its values
+    starts_from_zero = x - np.min(x)
+
+    # make the distribution fit [0; 1] by dividing by its range
+    return starts_from_zero / value_range
 
 def get_single_image_feature(image,model,transform):
     if isinstance(image,str):
@@ -61,6 +75,47 @@ def generate_pca():
     print(out_features.shape)
     print(target_labels.shape)
 
+    tsne = TSNE(2, perplexity=50, init='pca')
+    tsne_proj = tsne.fit_transform(out_features)
+    tx = tsne_proj[:, 0]
+    ty = tsne_proj[:, 1]    
+    tx = scale_to_01_range(tx)
+    ty = scale_to_01_range(ty)
 
+    fig = plt.figure(figsize=(12,4))
+    ax = fig.add_subplot(111)
+    colors_per_class = 12
+    cmap = cm.get_cmap('tab20')
+
+    classes = ['Upper Esophagus', 'Lower_Esophagus',
+                        'Upper Gastric Body', 'Middle Gastric Body', 'Lower Gastric Body',
+                        'Gastric Antrum', 'Esophagoastric Angle', 'Duodenal Bulb', 'Descending Duodenum',
+                        'Fundus Low', 'Fundus High', 'Background']
+
+    # for every class, we'll add a scatter plot separately
+    for label in range(colors_per_class):
+        # find the samples of the current class in the data
+        indices = [i for i, l in enumerate(target_labels) if l == label]
+
+        # extract the coordinates of the points of this class only
+        current_tx = np.take(tx, indices)
+        current_ty = np.take(ty, indices)
+        # current_tz = np.take(tz, indices)
+
+        # convert the class color to matplotlib format
+        color = np.array(cmap(label)).reshape(1, 4)
+        # color = cmap[label]
+        # add a scatter plot with the corresponding color and label
+        ax.scatter(current_tx, current_ty, s=10, c=color, label=classes[label])
+
+    # build a legend using the labels we set previously
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.7, box.height])
+
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    # plt.show()
+    # finally, show the plot
+    plt.savefig(os.path.join("/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224", 'position_sqz_pca.jpg'))
 if __name__ == '__main__':
     generate_pca()
