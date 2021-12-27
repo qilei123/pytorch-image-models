@@ -21,6 +21,7 @@ from timm.data.transforms_factory import create_transform
 torch.backends.cudnn.benchmark = True
 _logger = logging.getLogger('inference')
 
+
 def test_inference():
 
     checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/model_best.pth.tar'
@@ -45,8 +46,9 @@ def test_inference():
     
     with torch.no_grad():
         out = model(img_tensor)
-    print(out)
-
+    topk = out.topk(1)[1]
+    result = topk.cpu().numpy()
+    print(result)
 
 if __name__ == '__main__':
     test_inference()
