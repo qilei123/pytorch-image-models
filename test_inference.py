@@ -38,8 +38,11 @@ def init_model(model_name,checkpoint_path):
     return model,transform    
 
 def inference_single_image(image,model,transform):
-
-    img = Image.open(image).convert('RGB')
+    if isinstance(image,str):
+        img = Image.open(image).convert('RGB')
+    else:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        img = Image.fromarray(image)    
 
     img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
     img_tensor = img_tensor.cuda()
