@@ -42,7 +42,8 @@ def test_inference():
     img = Image.open(file_path).convert('RGB')
     img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
     
-    out = model(img_tensor)
+    with torch.no_grad():
+        out = model(img_tensor)
     print(out)
 
 
