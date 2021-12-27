@@ -15,7 +15,7 @@ def get_single_image_feature(image,model,transform):
         out_feature = model.forward_features(img_tensor)
     
     out_feature = out_feature.cpu().numpy()
-    print(out_feature.shape)
+    return out_feature
     
 
 def generate_pca():
@@ -27,7 +27,9 @@ def generate_pca():
 
     image = cv2.imread(img_path)
 
-    get_single_image_feature(image,model,transform)
+    out_feature = get_single_image_feature(image,model,transform)
+
+    print(out_feature)
 
 
 if __name__ == '__main__':
