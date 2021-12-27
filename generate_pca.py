@@ -48,13 +48,13 @@ def generate_pca():
         num_workers=2,
         crop_pct=1.0)
     out_features = torch.zeros((0, 1024), dtype=torch.float32)
-    targets = torch.zeros((0, 1), dtype=torch.float32)
+    targets = torch.zeros((0), dtype=torch.float32)
     with torch.no_grad():
         for batch_idx, (input, target) in enumerate(loader):
             input = input.cuda()
             out_feature = model.forward_features(input)
             out_features = torch.cat((out_features, out_feature.detach().cpu()), 0)
-            targets = torch.cat((targets, [target.detach().cpu()]), 0)
+            targets = torch.cat((targets, target.detach().cpu()), 0)
     print(out_features.shape)
     print(targets.shape)
 
