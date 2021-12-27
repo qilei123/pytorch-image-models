@@ -54,7 +54,7 @@ def generate_pca():
             input = input.cuda()
             out_feature = model.forward_features(input)
             out_features = torch.cat((out_features, out_feature.detach().cpu()), 0)
-            targets = torch.cat((targets, target.detach().cpu()), 0)
+            targets = torch.cat((targets, [target.detach().cpu()]), 0)
     print(out_features.shape)
     print(targets.shape)
 
