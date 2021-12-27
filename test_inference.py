@@ -47,7 +47,7 @@ def test_inference():
     with torch.no_grad():
         out = model(img_tensor)
     topk = out.topk(1)[1]
-    result = topk.cpu().numpy()
+    result = topk.cpu().numpy()[0]
     print(result)
 
 if __name__ == '__main__':
