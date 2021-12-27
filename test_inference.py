@@ -36,13 +36,13 @@ def test_inference():
     config = resolve_data_config({}, model=model)
     transform = create_transform(**config)
 
-    model = model.cuda()
+    #model = model.cuda()
     model.eval()
     
     img = Image.open(file_path).convert('RGB')
     img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
-    img_tensor.cuda()
-    print(img_tensor)
+    #img_tensor.cuda()
+    #print(img_tensor)
     with torch.no_grad():
         out = model(img_tensor)
     print(out)
