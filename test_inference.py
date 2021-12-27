@@ -21,14 +21,9 @@ from timm.data.transforms_factory import create_transform
 torch.backends.cudnn.benchmark = True
 _logger = logging.getLogger('inference')
 
-
-def test_inference():
-
-    checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/model_best.pth.tar'
-    file_path = '/home/qilei/.TEMP/gastro_position_clasification_11/test/0/20191015_1601_1610_w_779.jpg'
-
+def init_model(model_name,checkpoint_path):
     model = create_model(
-        'swin_base_patch4_window7_224',
+        model_name,
         num_classes=12,
         in_chans=3,
         pretrained=False,
@@ -39,16 +34,29 @@ def test_inference():
 
     model = model.cuda()
     model.eval()
-    
-    img = Image.open(file_path).convert('RGB')
+    return model,transform    
+
+def inference_single_image(img_path,model,transform):
+    img = Image.open(img_path).convert('RGB')
     img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
     img_tensor = img_tensor.cuda()
     
     with torch.no_grad():
         out = model(img_tensor)
     topk = out.topk(1)[1]
-    result = topk.cpu().numpy()[0]
-    print(result)
+    result_label = topk.cpu().numpy()[0][0]
+    return result_label
+
+def test_inference():
+
+    checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/model_best.pth.tar'
+    file_path = '/home/qilei/.TEMP/gastro_position_clasification_11/test/0/20191015_1601_1610_w_779.jpg'
+    model_name = 'swin_base_patch4_window7_224'
+    
+    model, transform = init_model(model_name,checkpoint_path)
+
+    result_label = inference_single_image(file_path,model,transform)
+    print(result_label)
 
 if __name__ == '__main__':
     test_inference()
