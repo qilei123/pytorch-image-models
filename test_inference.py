@@ -11,21 +11,27 @@ import argparse
 import logging
 import numpy as np
 import torch
+from PIL import Image
 
 from timm.models import create_model, apply_test_time_pool
-from timm.data import ImageDataset, create_loader, resolve_data_config
+from timm.data import resolve_data_config
 from timm.utils import AverageMeter, setup_default_logging
+from timm.data.transforms_factory import create_transform
 
 torch.backends.cudnn.benchmark = True
 _logger = logging.getLogger('inference')
 
 def test_inference():
+
+    checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/model_best.pth.tar'
+    file_path = ''
+
     model = create_model(
-        'vit_base_patch32_224',
+        'swin_base_patch4_window7_224',
         num_classes=12,
         in_chans=3,
         pretrained=False,
-        checkpoint_path='/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/vit_base_patch32_224-224/model_best.pth.tar')
+        checkpoint_path=checkpoint_path)
 
     config = resolve_data_config({}, model=model)
     transform = create_transform(**config)
@@ -33,7 +39,12 @@ def test_inference():
     model = model.cuda()
     model.eval()
     
-    image = cv2.imread()
+    img = Image.open(file_path).convert('RGB')
+    img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
+    
+    out = model(img_tensor)
+    print(out)
+
 
 if __name__ == '__main__':
     test_inference()
