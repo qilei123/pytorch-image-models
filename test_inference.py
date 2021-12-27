@@ -12,6 +12,7 @@ import logging
 import numpy as np
 import torch
 from PIL import Image
+import cv2
 
 from timm.models import create_model, apply_test_time_pool
 from timm.data import resolve_data_config
@@ -36,8 +37,10 @@ def init_model(model_name,checkpoint_path):
     model.eval()
     return model,transform    
 
-def inference_single_image(img_path,model,transform):
-    img = Image.open(img_path).convert('RGB')
+def inference_single_image(image,model,transform):
+
+    img = Image.open(image).convert('RGB')
+
     img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
     img_tensor = img_tensor.cuda()
     
@@ -45,17 +48,21 @@ def inference_single_image(img_path,model,transform):
         out = model(img_tensor)
     topk = out.topk(1)[1]
     result_label = topk.cpu().numpy()[0][0]
+
     return result_label
 
 def test_inference():
 
     checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/model_best.pth.tar'
-    file_path = '/home/qilei/.TEMP/gastro_position_clasification_11/test/0/20191015_1601_1610_w_779.jpg'
+    img_path = '/home/qilei/.TEMP/gastro_position_clasification_11/test/0/20191015_1601_1610_w_779.jpg'
     model_name = 'swin_base_patch4_window7_224'
     
     model, transform = init_model(model_name,checkpoint_path)
 
-    result_label = inference_single_image(file_path,model,transform)
+    img_path = cv2.imread(img_path)
+
+    result_label = inference_single_image(img_path,model,transform)
+
     print(result_label)
 
 if __name__ == '__main__':
