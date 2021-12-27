@@ -59,7 +59,7 @@ def generate_pca():
     out_features = np.array(out_features)
     target_labels = np.array(targets)
     print(out_features.shape)
-    print(targets.shape)
+    print(target_labels.shape)
 
 
 if __name__ == '__main__':
