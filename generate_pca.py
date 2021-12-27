@@ -55,6 +55,9 @@ def generate_pca():
             out_feature = model.forward_features(input)
             out_features = torch.cat((out_features, out_feature.detach().cpu()), 0)
             targets = torch.cat((targets, target.detach().cpu()), 0)
+
+    out_features = np.array(out_features)
+    target_labels = np.array(targets)
     print(out_features.shape)
     print(targets.shape)
 
