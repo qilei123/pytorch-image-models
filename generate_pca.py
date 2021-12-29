@@ -89,8 +89,8 @@ def generate_pca():
 
     classes = ['Upper Esophagus', 'Lower Esophagus',
                         'Upper Gastric Body', 'Middle Gastric Body', 'Lower Gastric Body',
-                        'Gastric Antrum', 'Esophagoastric Angle', 'Duodenal Bulb', 'Descending Duodenum',
-                        'Fundus Low', 'Fundus High', 'Background']
+                        'Gastric Antrum', 'Esophagogastric Angle', 'Duodenal Bulb', 'Descending Duodenum',
+                        'Lower Fundus', 'Upper Fundus', 'Background']
 
     # for every class, we'll add a scatter plot separately
     for label in range(colors_per_class):
