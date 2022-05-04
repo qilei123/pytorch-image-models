@@ -12,7 +12,7 @@ def create_parser(name, root, split='train', **kwargs):
     if len(name) > 1:
         prefix = name[0]
     name = name[-1]
-
+    print(name)
     # FIXME improve the selection right now just tfds prefix or fallback path, will need options to
     # explicitly select other options shortly
     if prefix == 'tfds':
@@ -25,11 +25,11 @@ def create_parser(name, root, split='train', **kwargs):
         if os.path.isfile(root) and os.path.splitext(root)[1] == '.tar':
             parser = ParserImageInTar(root, **kwargs)
         elif ('diabetic-retinopathy' in root) or ('kaggle_db' in root):
-            print('dbcsv')
+
             parser = ParserDBCSV(root,**kwargs)
-        elif name == "Adenoma":
+        elif name == "adenoma":
             parser = ParserAdenoma(root,split,**kwargs)
         else:
-            print('ImageFolder')
+
             parser = ParserImageFolder(root, **kwargs)
     return parser
