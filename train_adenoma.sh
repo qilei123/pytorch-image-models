@@ -1,9 +1,12 @@
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model mobilenetv3_large_100 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model densenet121 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model resnet50 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model efficientnet_b0 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+root_dir=/data3/qilei_chen/DATA/polyp_xinzi/orig_4_classification
+output_dir=$root_dir/work_dir
+num_class=2
+python train.py $root_dir --model mobilenetv3_large_100 --pretrained --num-classes $num_class --output $output_dir -b 64
+python train.py $root_dir --model densenet121 --pretrained --num-classes $num_class --output $output_dir -b 64
+python train.py $root_dir --model resnet50 --pretrained --num-classes $num_class --output $output_dir -b 64
+python train.py $root_dir --model efficientnet_b0 --pretrained --num-classes $num_class --output $output_dir -b 64
 #transformer
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model vit_base_patch32_224 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model twins_pcpvt_base --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model swin_base_patch4_window7_224 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
-python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model convit_base --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py $root_dir --model vit_base_patch32_224 --pretrained --num-classes $num_class --output $output_dir -b 64
+python train.py $root_dir --model twins_pcpvt_base --pretrained --num-classes $num_class --output $output_dir -b 64
+python train.py $root_dir --model swin_base_patch4_window7_224 --pretrained --num-classes $num_class --output $output_dir -b 64
+python train.py $root_dir --model convit_base --pretrained --num-classes $num_class --output $output_dir -b 64
