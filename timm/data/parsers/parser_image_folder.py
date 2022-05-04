@@ -158,13 +158,15 @@ class ParserAdenoma(Parser):
             DBbinary = False):
         super().__init__()
 
-        print(split)
+        
 
         self.root = root
 
         txt_ann = self.txt_anns[split]
-
-        txt_reader = open(os.path.join(self.root,txt_ann))
+        if self.root.endswith(split):
+            txt_reader = open(self.root+'.txt')
+        else:
+            txt_reader = open(os.path.join(self.root,txt_ann))
 
         self.samples=[]
 
@@ -173,8 +175,8 @@ class ParserAdenoma(Parser):
         while row_:
             row = row_.replace('\n','').split(" ")
 
-            if row[0] == os.path.basename(row[0]):
-                row[0] = os.path.join(split,row[0])
+            #if row[0] == os.path.basename(row[0]):
+            #    row[0] = os.path.join(split,row[0])
 
             row[1] = float(row[1])
 
