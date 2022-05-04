@@ -157,6 +157,9 @@ class ParserAdenoma(Parser):
             class_map='',
             DBbinary = False):
         super().__init__()
+
+        print(split)
+
         self.root = root
 
         txt_ann = self.txt_anns[split]

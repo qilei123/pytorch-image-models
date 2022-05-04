@@ -12,7 +12,6 @@ def create_parser(name, root, split='train', **kwargs):
     if len(name) > 1:
         prefix = name[0]
     name = name[-1]
-    print(name)
     # FIXME improve the selection right now just tfds prefix or fallback path, will need options to
     # explicitly select other options shortly
     if prefix == 'tfds':
