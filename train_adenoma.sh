@@ -1,0 +1,9 @@
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model mobilenetv3_large_100 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model densenet121 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model resnet50 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model efficientnet_b0 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+#transformer
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model vit_base_patch32_224 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model twins_pcpvt_base --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model swin_base_patch4_window7_224 --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64
+python train.py /data/qilei/.DATASETS/diabetic-retinopathy-detection --model convit_base --pretrained --num-classes 5 --output /data/qilei/.DATASETS/diabetic-retinopathy-detection/work_dir -b 64

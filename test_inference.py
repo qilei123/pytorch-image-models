@@ -14,6 +14,9 @@ import torch
 from PIL import Image
 import cv2
 
+import warnings
+warnings.filterwarnings("ignore")
+
 from timm.models import create_model, apply_test_time_pool
 from timm.data import resolve_data_config
 from timm.utils import AverageMeter, setup_default_logging
@@ -35,7 +38,7 @@ def init_model(model_name,checkpoint_path):
 
     model = model.cuda()
     model.eval()
-    return model,transform    
+    return model,transform     
 
 def inference_single_image(image,model,transform):
     if isinstance(image,str):
@@ -68,5 +71,38 @@ def test_inference():
 
     print(result_label)
 
+def init_model_4_feature(model_name,checkpoint_path):
+    model = create_model(
+        model_name,
+        num_classes=12,
+        in_chans=3,
+        pretrained=False,
+        checkpoint_path=checkpoint_path)
+
+    config = resolve_data_config({}, model=model)
+    transform = create_transform(**config)
+
+    model = model.cuda()
+    model.eval()
+    return model,transform 
+
+def test_inference_feature():
+    checkpoint_path = 'D:/DATASET/胃部部位识别/clean_model_best.pth'
+    img_path = 'D:/DATASET/胃部部位识别/gastro_position_clasification_11/test/0/20191015_1601_1610_w_779.jpg'
+    model_name = 'swin_base_patch4_window7_224'
+    
+    model, transform = init_model_4_feature(model_name,checkpoint_path)
+
+    img = Image.open(img_path).convert('RGB')    
+    
+    img_tensor = transform(img).unsqueeze(0) # transform and add batch dimension
+    img_tensor = img_tensor.cuda()
+    
+    with torch.no_grad():
+        out = model(img_tensor)
+
+    print(f'Unpooled shape: {out.shape}')
+
+
 if __name__ == '__main__':
-    test_inference()
+    test_inference_feature()

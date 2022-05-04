@@ -1,6 +1,6 @@
 import os
 
-from .parser_image_folder import ParserImageFolder,ParserDBCSV
+from .parser_image_folder import ParserImageFolder,ParserDBCSV,ParserAdenoma
 from .parser_image_tar import ParserImageTar
 from .parser_image_in_tar import ParserImageInTar
 
@@ -27,6 +27,8 @@ def create_parser(name, root, split='train', **kwargs):
         elif ('diabetic-retinopathy' in root) or ('kaggle_db' in root):
             print('dbcsv')
             parser = ParserDBCSV(root,**kwargs)
+        elif name == "Adenoma":
+            parser = ParserAdenoma(root,split,**kwargs)
         else:
             print('ImageFolder')
             parser = ParserImageFolder(root, **kwargs)
