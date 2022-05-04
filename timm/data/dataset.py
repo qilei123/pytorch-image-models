@@ -23,12 +23,13 @@ class ImageDataset(data.Dataset):
             self,
             root,
             parser=None,
+            split='train',
             class_map='',
             load_bytes=False,
             transform=None,
     ):
         if parser is None or isinstance(parser, str):
-            parser = create_parser(parser or '', root=root, class_map=class_map)
+            parser = create_parser(parser or '', root=root,split=split, class_map=class_map)
         self.parser = parser
         self.load_bytes = load_bytes
         self.transform = transform
