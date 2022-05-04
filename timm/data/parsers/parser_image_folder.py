@@ -154,6 +154,7 @@ class ParserAdenoma(Parser):
             self,
             root,
             split='train',
+            class_map='',
             DBbinary = False):
         super().__init__()
         self.root = root
