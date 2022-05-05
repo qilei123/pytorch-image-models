@@ -275,6 +275,8 @@ def validate(args):
 
         if args.confusion_matrix:
             cm = confusion_matrix(labels_true,labels_pred)
+            if not os.path.exists(args.confusion_matrix_fig_dir):
+                os.makedirs(args.confusion_matrix_fig_dir)
             plot_confusion_matrix(cm,range(0,args.num_classes),title=args.model,normalize=False,fig_name=os.path.join(args.confusion_matrix_fig_dir,"confusion_matrix"))
     if real_labels is not None:
         # real labels mode replaces topk values at the end
