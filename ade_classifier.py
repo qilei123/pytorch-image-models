@@ -56,7 +56,7 @@ class AdeClassifier(object):
 if __name__ == '__main__':
     model_path = "/data3/qilei_chen/DATA/polyp_xinzi/Ade_para.pkl"
 
-    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/test/adenoma/*.jpg")
+    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/test/none_adenoma/*.jpg")
 
     count=0
 
