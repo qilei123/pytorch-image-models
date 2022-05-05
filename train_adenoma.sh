@@ -1,4 +1,4 @@
-root_dir=/data3/qilei_chen/DATA/polyp_xinzi/preprocessed_4_classification
+root_dir=/data3/qilei_chen/DATA/polyp_xinzi/orig_4_classification
 output_dir=$root_dir/work_dir
 num_class=2
 # python train.py $root_dir --model mobilenetv3_large_100 --pretrained --num-classes $num_class --output $output_dir -b 64 --dataset Adenoma --val-split test
