@@ -1,5 +1,5 @@
 export data_dir=/data3/qilei_chen/DATA/polyp_xinzi/preprocessed_4_classification/
-export num_classes=12
+export num_classes=2
 export output_dir=${data_dir}work_dir
 export batch_size=64
 
