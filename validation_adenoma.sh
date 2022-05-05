@@ -12,4 +12,4 @@ python validate.py $data_dir \
     -b $batch_size \
     --confusion-matrix \
     --confusion-matrix-fig-dir $output_dir/$model_name-224 \
-    --dataset Adenoma --val-split test
+    --dataset Adenoma --split test
