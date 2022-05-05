@@ -11,5 +11,5 @@ python validate.py $data_dir \
     --checkpoint $checkpoint_dir \
     -b $batch_size \
     --confusion-matrix \
-    --confusion-matrix-fig-dir $data_dir/$model_name-224 \
+    --confusion-matrix-fig-dir $data_dir$model_name-224 \
     --dataset Adenoma --split test
