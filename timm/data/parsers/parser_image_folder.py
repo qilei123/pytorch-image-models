@@ -173,12 +173,14 @@ class ParserAdenoma(Parser):
         row_ = txt_reader.readline()
 
         while row_:
-            row = row_.replace('\n','').split(" ")
-
+            row_ = row_.replace('\n','')
+            row = []
+            row.append(row_[:-2])
+            row.append(float(row_[-1]))    
             #if row[0] == os.path.basename(row[0]):
             #    row[0] = os.path.join(split,row[0])
 
-            row[1] = float(row[1])
+            #row[1] = float(row[1])
 
             if DBbinary:
                 if row[1]>1:
