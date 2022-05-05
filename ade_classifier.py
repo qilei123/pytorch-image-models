@@ -66,6 +66,7 @@ if __name__ == '__main__':
         pil_img = np.asarray(pil_img)
         label = cc.predict(pil_img)
         count += label
+        print(count)
         # time used to each step
         # preprocess ->>>>>0.0023029410003800876
         # classify ->>>>>0.015841885000554612
