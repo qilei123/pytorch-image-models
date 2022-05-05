@@ -61,8 +61,6 @@ if __name__ == '__main__':
     count=0
 
     for img_path in img_paths:
-
-        img_path = "colon_adenomatous/colon_adenomatous_2015-03-03_0003566527/img/608c051a-9a92-40f7-b093-740ed7421359.jpg"
         cc = AdeClassifier(model_path)
         pil_img = Image.open(img_path)
         pil_img = np.asarray(pil_img)
