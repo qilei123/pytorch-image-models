@@ -193,7 +193,7 @@ class ParserAdenoma(Parser):
             self.samples.append(row)
             
             row_ = txt_reader.readline()
-        #random.shuffle(self.samples)
+        random.shuffle(self.samples)
 
         if len(self.samples) == 0:
             raise RuntimeError(
