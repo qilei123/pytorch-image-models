@@ -7,7 +7,7 @@
 
 python inference.py /data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/ \
     --output_dir /data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/ \
-    -m swin_base_patch4_window7_224 \
+    -m resnext50_32x4d \
     --num-classes 2 \
     -b 32 \
-    --checkpoint /data3/qilei_chen/DATA/polyp_xinzi/preprocessed_4_classification/work_dir/swin_base_patch4_window7_224-224/model_best.pth.tar
+    --checkpoint /data3/qilei_chen/DATA/polyp_xinzi/preprocessed_4_classification/work_dir/resnext50_32x4d-224/model_best.pth.tar
