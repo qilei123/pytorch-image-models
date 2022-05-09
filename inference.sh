@@ -5,7 +5,7 @@
 #     -b 32 \
 #     --checkpoint /home/qilei/.TEMP/gastro_position_clasification_11/work_dir/vit_base_patch32_224-224/model_best.pth.tar
 
-python inference.py /data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/adenoma/ \
+python inference.py /data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/ \
     --output_dir /data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/ \
     -m swin_base_patch4_window7_224 \
     --num-classes 2 \
