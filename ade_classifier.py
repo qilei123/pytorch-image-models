@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     cc = AdeClassifier(model_path)
 
-    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/orig_images/adenoma/*.jpg")
+    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/adenoma/*.jpg")
 
     count = 0
 
@@ -74,13 +74,13 @@ if __name__ == '__main__':
 
     print(count)
 
-    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/orig_images/none_adenoma/*.jpg")
+    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/preprocessed/test/none_adenoma/*.jpg")
 
     count=0
 
     for img_path in img_paths:
 
-        pil_img = Image.open(img_path).convert('RGB')
+        pil_img = Image.open(img_path)#.convert('RGB')
         pil_img = np.asarray(pil_img)
         label = cc.predict(pil_img)
         count += label
