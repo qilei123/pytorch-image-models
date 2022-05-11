@@ -56,17 +56,35 @@ class AdeClassifier(object):
 if __name__ == '__main__':
     model_path = "/data3/qilei_chen/DATA/polyp_xinzi/Ade_para.pkl"
 
+    cc = AdeClassifier(model_path)
+
+    img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/test/adenoma/*.jpg")
+
+    count = 0
+
+    for img_path in img_paths:
+        pil_img = Image.open(img_path).convert('RGB')
+        pil_img = np.asarray(pil_img)
+        label = cc.predict(pil_img)
+        count += label
+        # print(count)
+        # time used to each step
+        # preprocess ->>>>>0.0023029410003800876
+        # classify ->>>>>0.015841885000554612
+
+    print(count)
+
     img_paths = glob.glob("/data3/qilei_chen/DATA/polyp_xinzi/D2/test/none_adenoma/*.jpg")
 
     count=0
 
     for img_path in img_paths:
-        cc = AdeClassifier(model_path)
+
         pil_img = Image.open(img_path).convert('RGB')
         pil_img = np.asarray(pil_img)
         label = cc.predict(pil_img)
         count += label
-        print(count)
+        #print(count)
         # time used to each step
         # preprocess ->>>>>0.0023029410003800876
         # classify ->>>>>0.015841885000554612
