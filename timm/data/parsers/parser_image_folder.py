@@ -213,3 +213,70 @@ class ParserAdenoma(Parser):
         elif not absolute:
             filename = os.path.relpath(filename, self.root)
         return filename
+
+
+class ParserDental(Parser):
+    coco_anns = {"train": "train_1_3.json", "test": "test_1_3.json",
+                 "train_crop": "train_1_3_crop.json", "test_crop": "test_1_3_crop.json"}
+
+    def __init__(
+            self,
+            root,
+            split='train',
+            class_map='',
+            DBbinary=False):
+        super().__init__()
+
+        self.root = root
+
+        txt_ann = self.coco_anns[split]
+        if self.root.endswith(split):
+            txt_reader = open(self.root + '.txt')
+        else:
+            txt_reader = open(os.path.join(self.root, txt_ann))
+
+        self.samples = []
+
+        row_ = txt_reader.readline()
+
+        while row_:
+            row_ = row_.replace('\n', '')
+            row = []
+            row.append(row_[:-2])
+            row.append(float(row_[-1]))
+            # if row[0] == os.path.basename(row[0]):
+            #    row[0] = os.path.join(split,row[0])
+
+            # row[1] = float(row[1])
+
+            if DBbinary:
+                if row[1] > 1:
+                    row[1] = 0
+                else:
+                    row[1] = 1
+
+            row[0] = os.path.join(self.root, row[0])
+
+            self.samples.append(row)
+
+            row_ = txt_reader.readline()
+        random.shuffle(self.samples)
+
+        if len(self.samples) == 0:
+            raise RuntimeError(
+                f'Found 0 images in subfolders of {root}. Supported image extensions are {", ".join(IMG_EXTENSIONS)}')
+
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        return open(path, 'rb'), target
+
+    def __len__(self):
+        return len(self.samples)
+
+    def _filename(self, index, basename=False, absolute=False):
+        filename = self.samples[index][0]
+        if basename:
+            filename = os.path.basename(filename)
+        elif not absolute:
+            filename = os.path.relpath(filename, self.root)
+        return filename

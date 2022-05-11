@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     for img_path in img_paths:
         cc = AdeClassifier(model_path)
-        pil_img = Image.open(img_path)
+        pil_img = Image.open(img_path).convert('RGB')
         pil_img = np.asarray(pil_img)
         label = cc.predict(pil_img)
         count += label
