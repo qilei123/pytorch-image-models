@@ -169,9 +169,11 @@ class ImageROIDataset(data.Dataset):
         self._consecutive_errors = 0
 
     def __getitem__(self, index):
-        img, target = self.parser[index]
+        img, target,bbox = self.parser[index]
+
         try:
             img = img.read() if self.load_bytes else Image.open(img).convert('RGB')
+            img = img.crop((bbox[0], bbox[1], bbox[0]+bbox[2], bbox[1]+bbox[3]))
         except Exception as e:
             _logger.warning(f'Skipped sample (index {index}, file {self.parser.filename(index)}). {str(e)}')
             self._consecutive_errors += 1
