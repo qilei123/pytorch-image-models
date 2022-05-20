@@ -238,7 +238,11 @@ class ParserDental(Parser):
         for i in self.coco.anns:
             row = []
             row.append(self.coco.anns[i]['id'])
-            row.append(self.coco.anns[i]['category_id'])
+            #category id map to target 这里分2类，normal,abnormal
+            if self.coco.anns[i]['category_id']==1:
+                row.append(0)
+            else:
+                row.append(1)
             row.append(self.coco.anns[i]['bbox'])
             self.samples.append(row)
 
@@ -247,7 +251,9 @@ class ParserDental(Parser):
         if len(self.samples) == 0:
             raise RuntimeError(
                 f'Found 0 images in subfolders of {root}. Supported image extensions are {", ".join(IMG_EXTENSIONS)}')
-
+        else:
+            pass
+            #print(len(self.samples))
     def __getitem__(self, index):
         ann_id, target,bbox = self.samples[index]
         file_name = self.coco.imgs[self.coco.anns[ann_id]["image_id"]]["file_name"]

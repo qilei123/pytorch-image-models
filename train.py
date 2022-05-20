@@ -179,7 +179,7 @@ parser.add_argument('--ratio', type=float, nargs='+', default=[3./4., 4./3.], me
                     help='Random resize aspect ratio (default: 0.75 1.33)')
 parser.add_argument('--hflip', type=float, default=0.5,
                     help='Horizontal flip training aug probability')
-parser.add_argument('--vflip', type=float, default=0.,
+parser.add_argument('--vflip', type=float, default=0.5,
                     help='Vertical flip training aug probability')
 parser.add_argument('--color-jitter', type=float, default=0.4, metavar='PCT',
                     help='Color jitter factor (default: 0.4)')

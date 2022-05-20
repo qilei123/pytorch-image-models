@@ -32,6 +32,5 @@ def create_parser(name, root, split='train', **kwargs):
         elif name == "dental":
             parser = ParserDental(root,split,**kwargs)
         else:
-
             parser = ParserImageFolder(root, **kwargs)
     return parser

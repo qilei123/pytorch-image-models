@@ -169,7 +169,7 @@ class ImageROIDataset(data.Dataset):
         self._consecutive_errors = 0
 
     def __getitem__(self, index):
-        img, target,bbox = self.parser[index]
+        img, target, bbox = self.parser[index]
 
         try:
             img = img.read() if self.load_bytes else Image.open(img).convert('RGB')
