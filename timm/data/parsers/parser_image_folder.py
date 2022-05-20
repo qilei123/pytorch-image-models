@@ -230,9 +230,10 @@ class ParserDental(Parser):
         self.root = root
 
         json_ann = self.coco_anns[split]
-
-        self.coco = COCO(os.path.join(self.root,"annotations", json_ann))
-
+        if os.path.exists(os.path.join(self.root,"annotations")):
+            self.coco = COCO(os.path.join(self.root,"annotations", json_ann))
+        else:
+            self.coco = COCO(os.path.join(self.root, "annos", json_ann))
         self.samples = []
 
         for i in self.coco.anns:
@@ -271,3 +272,6 @@ class ParserDental(Parser):
         elif not absolute:
             filename = os.path.relpath(filename, self.root)
         return filename
+
+class ParserAdenomaROI(ParserDental):
+    coco_anns = {"train": "train.json", "test": "test.json",}

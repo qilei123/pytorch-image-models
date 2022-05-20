@@ -1,6 +1,6 @@
 import os
 
-from .parser_image_folder import ParserImageFolder,ParserDBCSV,ParserAdenoma,ParserDental
+from .parser_image_folder import ParserImageFolder,ParserDBCSV,ParserAdenoma,ParserDental,ParserAdenomaROI
 from .parser_image_tar import ParserImageTar
 from .parser_image_in_tar import ParserImageInTar
 
@@ -31,6 +31,8 @@ def create_parser(name, root, split='train', **kwargs):
 
         elif name == "dental":
             parser = ParserDental(root,split,**kwargs)
+        elif name == "adenomaroi":
+            parser = ParserAdenomaROI(root, split, **kwargs)
         else:
             parser = ParserImageFolder(root, **kwargs)
     return parser

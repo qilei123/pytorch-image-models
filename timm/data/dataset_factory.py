@@ -21,7 +21,7 @@ def create_dataset(name, root, split='validation', search_split=True, is_trainin
     if name.startswith('tfds'):
         ds = IterableImageDataset(
             root, parser=name, split=split, is_training=is_training, batch_size=batch_size, **kwargs)
-    elif name.startswith("dental"):
+    elif name.startswith("dental") or name.startswith("adenomaroi"):
         kwargs.pop('repeats', 0)  # FIXME currently only Iterable dataset support the repeat multiplier
         if search_split and os.path.isdir(root):
             root = _search_split(root, split)
