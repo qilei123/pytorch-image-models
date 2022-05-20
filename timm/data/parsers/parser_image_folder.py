@@ -234,7 +234,7 @@ class ParserDental(Parser):
             print(os.path.join(self.root, "annotations", json_ann))
             self.coco = COCO(os.path.join(self.root,"annotations", json_ann))
         else:
-            print(os.path.join(self.root, "annotations", json_ann))
+            print(os.path.join(self.root, "annos", json_ann))
             self.coco = COCO(os.path.join(self.root, "annos", json_ann))
         self.samples = []
 
