@@ -231,8 +231,10 @@ class ParserDental(Parser):
 
         json_ann = self.coco_anns[split]
         if os.path.exists(os.path.join(self.root,"annotations")):
+            print(os.path.join(self.root, "annotations", json_ann))
             self.coco = COCO(os.path.join(self.root,"annotations", json_ann))
         else:
+            print(os.path.join(self.root, "annotations", json_ann))
             self.coco = COCO(os.path.join(self.root, "annos", json_ann))
         self.samples = []
 
