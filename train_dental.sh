@@ -15,4 +15,6 @@ python train.py $root_dir --model swin_base_patch4_window7_224 --pretrained --nu
 # python train.py $root_dir --model swin_base_patch4_window7_224 --pretrained --num-classes $num_class --output ${output_dir}_balanced -b 64 --dataset Adenoma --val-split test --use_balanced_sampler
 # python train.py $root_dir --model convit_base --pretrained --num-classes $num_class --output $output_dir -b 64 --dataset Adenoma --val-split test
 
+python train.py /home/qilei/.TEMP/TEETH3 --model resnext50_32x4d --pretrained --num-classes 2 --output /home/qilei/.TEMP/TEETH3/work_dir -b 64 --dataset segdental --val-split test
+
 

@@ -6,7 +6,8 @@ import torch.utils.data as data
 import os
 import torch
 import logging
-
+import cv2
+import numpy as np
 from PIL import Image
 
 from .parsers import create_parser
@@ -201,3 +202,32 @@ class ImageROIDataset(data.Dataset):
         for sample in self.parser.samples:
             labels.append(sample[1])
         return labels
+
+class ImageSegDataset(ImageROIDataset):
+    def __getitem__(self, index):
+        img_path, target, seg = self.parser[index]
+        print(img_path)
+        try:
+            img = cv2.imread(img_path)
+            pts = np.array(seg,dtype=int)
+            pts = pts.reshape((-1,2))
+            print(pts)
+            rect = cv2.boundingRect(pts)
+            x, y, w, h = rect
+            croped = img[y:y + h, x:x + w].copy()
+            mask = np.zeros(croped.shape[:2], np.uint8)
+            img = cv2.bitwise_and(croped, croped, mask=mask)
+            cv2.imwrite("/home/qilei/.TEMP/TEETH3/test.jpg",img)
+        except Exception as e:
+            _logger.warning(f'Skipped sample (index {index}, file {self.parser.filename(index)}). {str(e)}')
+            self._consecutive_errors += 1
+            if self._consecutive_errors < _ERROR_RETRY:
+                return self.__getitem__((index + 1) % len(self.parser))
+            else:
+                raise e
+        self._consecutive_errors = 0
+        if self.transform is not None:
+            img = self.transform(img)
+        if target is None:
+            target = torch.tensor(-1, dtype=torch.long)
+        return img, target

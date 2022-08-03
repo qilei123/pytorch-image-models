@@ -326,6 +326,7 @@ def main():
 
     if len(model_cfgs):
         results_file = args.results_file or './results-all.csv'
+        print(results_file)
         _logger.info('Running bulk validation on these pretrained models: {}'.format(', '.join(model_names)))
         results = []
         try:
