@@ -34,13 +34,14 @@ def get_single_image_feature(image,model,transform):
     
 
 def generate_pca():
-    checkpoint_path = '/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224/clean_model_best.pth'
-    img_path = '/home/qilei/.TEMP/gastro_position_clasification_11/test/'
-    model_name = 'swin_base_patch4_window7_224'
-    
+    checkpoint_path = '/home/qilei/.TEMP/FDWJ/v3_2/work_dir/resnext50_32x4d-224/clean_model_best.pth'
+    img_path = '/home/qilei/.TEMP/FDWJ/v3_2/test/'
+    model_name = 'resnext50_32x4d'
+    num_classes=2
+
     model = create_model(
         model_name,
-        num_classes=12,
+        num_classes=num_classes,
         in_chans=3,
         pretrained=False,
         checkpoint_path=checkpoint_path)
@@ -61,12 +62,13 @@ def generate_pca():
         std=config['std'],
         num_workers=2,
         crop_pct=1.0)
-    out_features = torch.zeros((0, 1024), dtype=torch.float32)
+    out_features = torch.zeros((0, 2048), dtype=torch.float32)
     targets = torch.zeros((0), dtype=torch.float32)
     with torch.no_grad():
         for batch_idx, (input, target) in enumerate(loader):
             input = input.cuda()
-            out_feature = model.forward_features(input)
+            out_feature = model.forward_features1(input)
+            #print(out_feature.shape)
             out_features = torch.cat((out_features, out_feature.detach().cpu()), 0)
             targets = torch.cat((targets, target.detach().cpu()), 0)
 
@@ -84,14 +86,14 @@ def generate_pca():
 
     fig = plt.figure(figsize=(12,4))
     ax = fig.add_subplot(111)
-    colors_per_class = 12
+    colors_per_class = num_classes
     cmap = cm.get_cmap('tab20')
 
-    classes = ['Upper Esophagus', 'Lower Esophagus',
-                        'Upper Gastric Body', 'Middle Gastric Body', 'Lower Gastric Body',
-                        'Gastric Antrum', 'Esophagogastric Angle', 'Duodenal Bulb', 'Descending Duodenum',
-                        'Lower Fundus', 'Upper Fundus', 'Background']
-
+    #classes = ['Upper Esophagus', 'Lower Esophagus',
+    #                    'Upper Gastric Body', 'Middle Gastric Body', 'Lower Gastric Body',
+    #                    'Gastric Antrum', 'Esophagogastric Angle', 'Duodenal Bulb', 'Descending Duodenum',
+    #                    'Lower Fundus', 'Upper Fundus', 'Background']
+    classes = ['0','1']
     # for every class, we'll add a scatter plot separately
     for label in range(colors_per_class):
         # find the samples of the current class in the data
@@ -116,6 +118,7 @@ def generate_pca():
 
     # plt.show()
     # finally, show the plot
-    plt.savefig(os.path.join("/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224", model_name+'_pca.jpg'))
+    #plt.savefig(os.path.join("/home/qilei/.TEMP/gastro_position_clasification_11/work_dir/swin_base_patch4_window7_224-224", model_name+'_pca.jpg'))
+    plt.savefig(os.path.join("/home/qilei/.TEMP/FDWJ/v3_2/work_dir/resnext50_32x4d-224/", model_name+'_pca.jpg'))
 if __name__ == '__main__':
     generate_pca()

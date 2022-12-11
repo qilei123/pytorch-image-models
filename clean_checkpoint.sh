@@ -1,0 +1,1 @@
+python clean_checkpoint.py --checkpoint /home/qilei/.TEMP/FDWJ/v3_2/work_dir/resnext50_32x4d-224/model_best.pth.tar --output /home/qilei/.TEMP/FDWJ/v3_2/work_dir/resnext50_32x4d-224/clean_model_best.pth

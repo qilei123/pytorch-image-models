@@ -671,6 +671,14 @@ class ResNet(nn.Module):
         x = self.layer4(x)
         return x
 
+    def forward_features1(self, x):
+        x = self.forward_features(x)
+        x = self.global_pool(x)
+        if self.drop_rate:
+            x = F.dropout(x, p=float(self.drop_rate), training=self.training)
+        #x = self.fc(x)
+        return x
+
     def forward(self, x):
         x = self.forward_features(x)
         x = self.global_pool(x)

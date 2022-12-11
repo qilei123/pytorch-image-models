@@ -40,6 +40,10 @@ from timm.optim import create_optimizer_v2, optimizer_kwargs
 from timm.scheduler import create_scheduler
 from timm.utils import ApexScaler, NativeScaler
 
+import sys
+sys.path.append("/home/qilei/DEVELOPMENT/ML_Decoder/src_files/ml_decoder")
+from ml_decoder import *
+
 try:
     from apex import amp
     from apex.parallel import DistributedDataParallel as ApexDDP
@@ -179,7 +183,7 @@ parser.add_argument('--ratio', type=float, nargs='+', default=[3./4., 4./3.], me
                     help='Random resize aspect ratio (default: 0.75 1.33)')
 parser.add_argument('--hflip', type=float, default=0.5,
                     help='Horizontal flip training aug probability')
-parser.add_argument('--vflip', type=float, default=0.,
+parser.add_argument('--vflip', type=float, default=0.5,
                     help='Vertical flip training aug probability')
 parser.add_argument('--color-jitter', type=float, default=0.4, metavar='PCT',
                     help='Color jitter factor (default: 0.4)')
@@ -300,6 +304,9 @@ parser.add_argument('--log-wandb', action='store_true', default=False,
 parser.add_argument('--use_balanced_sampler', action='store_true', default=False,
                     help='use_balanced_sampler.')
 
+parser.add_argument('--add_ml_decoder_head', action='store_true', default=False,
+                    help='add ml_decoder head.')
+
 def _parse_args():
     # Do we have a config file to parse?
     args_config, remaining = config_parser.parse_known_args()
@@ -400,6 +407,8 @@ def main():
         assert num_aug_splits > 1 or args.resplit
         model = convert_splitbn_model(model, max(num_aug_splits, 2))
 
+    if args.add_ml_decoder_head:
+        model = add_ml_decoder_head(model)
     # move model to GPU, enable channels last layout if set
     model.cuda()
     if args.channels_last:
@@ -581,6 +590,7 @@ def main():
             train_loss_fn = LabelSmoothingCrossEntropy(smoothing=args.smoothing)
     else:
         train_loss_fn = nn.CrossEntropyLoss()
+        #train_loss_fn = nn.CrossEntropyLoss(weight=torch.tensor([0.05,1],dtype=torch.float))
     train_loss_fn = train_loss_fn.cuda()
     validate_loss_fn = nn.CrossEntropyLoss().cuda()
 
@@ -670,8 +680,15 @@ def train_one_epoch(
     model.train()
 
     end = time.time()
+    
     last_idx = len(loader) - 1
+
     num_updates = epoch * len(loader)
+
+    #if hasattr(loader.dataset.parser,'balance_samples'):
+    #    loader.dataset.parser.balance_samples()
+    print(len(loader.dataset.parser.samples))
+    
     for batch_idx, (input, target) in enumerate(loader):
         last_batch = batch_idx == last_idx
         data_time_m.update(time.time() - end)
@@ -770,6 +787,11 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
     end = time.time()
     last_idx = len(loader) - 1
     with torch.no_grad():
+
+        #if hasattr(loader.dataset.parser,'balance_samples'):
+        #    loader.dataset.parser.balance_samples()
+        print(len(loader.dataset.parser.samples))
+        
         for batch_idx, (input, target) in enumerate(loader):
             last_batch = batch_idx == last_idx
             if not args.prefetcher:

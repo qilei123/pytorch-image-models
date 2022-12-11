@@ -222,6 +222,7 @@ def create_loader(
     if is_training and use_balanced_sampler:
         print("balanced sample")
         sampler = ImbalancedDatasetSampler(dataset)
+        print(sampler)
     if collate_fn is None:
         collate_fn = fast_collate if use_prefetcher else torch.utils.data.dataloader.default_collate
 

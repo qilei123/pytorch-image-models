@@ -6,7 +6,8 @@ import torch.utils.data as data
 import os
 import torch
 import logging
-
+import cv2
+import numpy as np
 from PIL import Image
 
 from .parsers import create_parser
@@ -149,3 +150,89 @@ class AugMixDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.dataset)
+
+class ImageROIDataset(data.Dataset):
+
+    def __init__(
+            self,
+            root,
+            parser=None,
+            split='train',
+            class_map='',
+            load_bytes=False,
+            transform=None,
+    ):
+        if parser is None or isinstance(parser, str):
+            parser = create_parser(parser or '', root=root,split=split, class_map=class_map)
+        self.parser = parser
+        self.load_bytes = load_bytes
+        self.transform = transform
+        self._consecutive_errors = 0
+
+    def __getitem__(self, index):
+        img, target, bbox = self.parser[index]
+
+        try:
+            img = img.read() if self.load_bytes else Image.open(img).convert('RGB')
+            img = img.crop((bbox[0], bbox[1], bbox[0]+bbox[2], bbox[1]+bbox[3]))
+        except Exception as e:
+            _logger.warning(f'Skipped sample (index {index}, file {self.parser.filename(index)}). {str(e)}')
+            self._consecutive_errors += 1
+            if self._consecutive_errors < _ERROR_RETRY:
+                return self.__getitem__((index + 1) % len(self.parser))
+            else:
+                raise e
+        self._consecutive_errors = 0
+        if self.transform is not None:
+            img = self.transform(img)
+        if target is None:
+            target = torch.tensor(-1, dtype=torch.long)
+        return img, target
+
+    def __len__(self):
+        return len(self.parser)
+
+    def filename(self, index, basename=False, absolute=False):
+        return self.parser.filename(index, basename, absolute)
+
+    def filenames(self, basename=False, absolute=False):
+        return self.parser.filenames(basename, absolute)
+    def get_labels(self):
+        labels =[]
+        for sample in self.parser.samples:
+            labels.append(sample[1])
+        return labels
+
+class ImageSegDataset(ImageROIDataset):
+    def __getitem__(self, index):
+        img_path, target, seg = self.parser[index]
+        #print(img_path)
+        try:
+            img = cv2.imread(img_path)
+            pts = np.array(seg,dtype=int)
+            pts = pts.reshape((-1,2))
+            #print(pts)
+            rect = cv2.boundingRect(pts)
+            x, y, w, h = rect
+            croped = img[y:y + h, x:x + w].copy()
+            mask = np.zeros(croped.shape[:2], np.uint8)
+            pts = pts - pts.min(axis=0)
+            cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
+            cv2.imwrite("/home/qilei/.TEMP/TEETH3/crop.jpg", croped)
+            img = cv2.bitwise_and(croped, croped, mask=mask)
+            cv2.imwrite("/home/qilei/.TEMP/TEETH3/crop_seg.jpg",img)
+            exit(0)
+            img = Image.fromarray(img)
+        except Exception as e:
+            _logger.warning(f'Skipped sample (index {index}, file {self.parser.filename(index)}). {str(e)}')
+            self._consecutive_errors += 1
+            if self._consecutive_errors < _ERROR_RETRY:
+                return self.__getitem__((index + 1) % len(self.parser))
+            else:
+                raise e
+        self._consecutive_errors = 0
+        if self.transform is not None:
+            img = self.transform(img)
+        if target is None:
+            target = torch.tensor(-1, dtype=torch.long)
+        return img, target

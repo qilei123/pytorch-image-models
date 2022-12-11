@@ -118,9 +118,14 @@ def main():
 
     with open(os.path.join(args.output_dir, args.model+'.csv'), 'w') as out_file:
         filenames = loader.dataset.filenames(basename=True)
-        for filename, label in zip(filenames, topk_ids):
-            out_file.write('{0},{1}\n'.format(
-                filename, ','.join([ str(v) for v in label])))
+        labels = loader.dataset.get_labels()
+        for filename, gt_label,label in zip(filenames, labels, topk_ids):
+            if int(gt_label)==int(label):
+                out_file.write('{0},{1},{2},{3}\n'.format(
+                    filename, ','.join(str(gt_label)),','.join([ str(v) for v in label]),'T'))
+            else:
+                out_file.write('{0},{1},{2},{3}\n'.format(
+                    filename, ','.join(str(gt_label)),','.join([ str(v) for v in label]),'F'))
 
 
 if __name__ == '__main__':
