@@ -57,6 +57,31 @@ parser.add_argument('--topk', default=1, type=int,
                     metavar='N', help='Top-k to output to CSV')
 
 
+def generateFoldConfusionMatrix(dataset_dir ='dataset/FDWJ/FDWJ_SHARES_v4/v4_4/',
+                                matrix_dir = 'dataset/work_dir/v4_4/swin_base_patch4_window7_224-224',
+                                record_dir ='dataset/work_dir/v4_4/swin_base_patch4_window7_224.csv'):
+
+
+    record_file = open(os.path.join(record_dir))
+
+    line = record_file.readline()    
+
+    while line:
+
+        eles = line.split(',')
+
+        dst_dir = os.path.join(matrix_dir,'confusion_matrix',eles[1],eles[2])
+
+        os.makedirs(dst_dir,exist_ok=True)
+
+        src_dir = os.path.join(dataset_dir,'test',eles[1],eles[0])
+
+        command_str = 'cp '+ src_dir+" "+dst_dir
+
+        os.system(command_str)
+
+        line = record_file.readline()
+
 def main():
     setup_default_logging()
     args = parser.parse_args()
@@ -115,13 +140,20 @@ def main():
                     batch_idx, len(loader), batch_time=batch_time))
 
     topk_ids = np.concatenate(topk_ids, axis=0)
-
+    os.makedirs(args.output_dir,exist_ok = True)
     with open(os.path.join(args.output_dir, args.model+'.csv'), 'w') as out_file:
         filenames = loader.dataset.filenames(basename=True)
-        for filename, label in zip(filenames, topk_ids):
-            out_file.write('{0},{1}\n'.format(
-                filename, ','.join([ str(v) for v in label])))
-
+        labels = loader.dataset.get_labels()
+        for filename, gt_label,label in zip(filenames, labels, topk_ids):
+            if int(gt_label)==int(label):
+                out_file.write('{0},{1},{2},{3}\n'.format(
+                    filename, ','.join(str(gt_label)),','.join([ str(v) for v in label]),'T'))
+            else:
+                out_file.write('{0},{1},{2},{3}\n'.format(
+                    filename, ','.join(str(gt_label)),','.join([ str(v) for v in label]),'F'))
+    #generateFoldConfusionMatrix(args.data,os.path.dirname(args.checkpoint),args.model+'.csv')
+    
 
 if __name__ == '__main__':
     main()
+    generateFoldConfusionMatrix()
